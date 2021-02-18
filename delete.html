@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Delete</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="http://login2explore.com/jpdb/resources/js/0.0.3/jpdb-commons.js"></script>    </head>
+    <body>
+    <center><h1>Delete Student Details!!</h1></center>
+    <center><input id="studId" maxlength="10" placeholder="Student Id" name="studId" type="text" /><br><br>
+        <input type="button" value="DELETE" onclick="deleteStudent();"/></center>
+
+    <script>
+        function executeCommand(reqString, dbBaseUrl, apiEndPointUrl) {
+            var url = dbBaseUrl + apiEndPointUrl;
+            var jsonObj;
+            $.post(url, reqString, function (result) {
+                jsonObj = JSON.parse(result);
+            }).fail(function (result) {
+                var dataJsonObj = result.responseText;
+                jsonObj = JSON.parse(dataJsonObj);
+            });
+            return jsonObj;
+        }
+        function deleteStudent() {
+            var token = "90935387|-31948797586734891|90932176";
+            var dbname = "STUDENT";
+            var relationName = "STUD-DETAILS";
+            var sid1 = parseInt(document.getElementById("studId").value);
+            var reqString = createREMOVERecordRequest(token, dbname, relationName, sid1);
+            alert(reqString);
+            jQuery.ajaxSetup({async: false});
+            var resultObj = executeCommand(reqString,
+                    "http://api.login2explore.com:5577", "/api/iml");
+            jQuery.ajaxSetup({async: true});
+            alert(JSON.stringify(resultObj));
+
+        }
+    </script>
+</body>
+</html>
